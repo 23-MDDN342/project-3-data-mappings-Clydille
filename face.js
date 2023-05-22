@@ -29,7 +29,9 @@ function segment_average(segment) {
 }
 
 // This where you define your own face object
-function Face() {
+function Face(facecolor_value, eyecolor_value, top_value, dot_value) {  
+  
+
   // these are state variables for a face
   // (your variables should be different!)
   this.detailColour = [204, 136, 17];
