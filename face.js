@@ -65,13 +65,8 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
     ellipseMode(CENTER);
     stroke(stroke_color);
     fill(this.darkred);
-    ellipse(segment_average(positions.chin)[0], this.Iy, this.headSize, this.headSize);
+    ellipse(segment_average(positions.chin)[0], segment_average(positions.chin)[0], this.headSize, this.headSize);
     noStroke();
-
-
-    // // mouth
-    // fill(this.detailColour);
-    // ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
 
     let left_eye_pos = segment_average(positions.left_eye);
     let right_eye_pos = segment_average(positions.right_eye);
@@ -82,7 +77,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
       fill(this.yellow);
       push()
       translate(0.2, 2)
-      ellipse(left_eye_pos[0], left_eye_pos[0], 0.5, 0.5);
+      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.5);
       translate(0.5, 0)
       ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.5);
       pop()
@@ -93,7 +88,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
       fill(this.cream);
       push()
       translate(0.2, 2)
-      ellipse(left_eye_pos[0], left_eye_pos[0], 0.5, 0.5);
+      ellipse(left_eye_pos[1], left_eye_pos[1], 0.5, 0.5);
       translate(0.5, 0)
       ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.5);
       pop()
@@ -108,7 +103,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
  
     push()
     scale(0.4)
-    translate(1, 0)
+    translate(segment_average(positions.chin)[0], segment_average(positions.chin)[0])
     beginShape();
     vertex(0, 1);
     bezierVertex(-2, 1, -4.5, 1, -7, 0.5);
@@ -125,7 +120,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
   fill(this.red) /// red
   scale(0.3)
-  translate(1,0)
+  translate(segment_average(positions.chin)[1],0)
   rect(-10, -10, 20, 12, 5, 5, 1, 1);
 
     }
