@@ -43,6 +43,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
   this.num_eyes = 2;    // can be either 1 (cyclops) or 2 (two eyes)
   this.top_value = 1;   // range is -10 to 10
   this.mouth_size = 1;  // range is 0.5 to 8
+  this.dot_value = 2;
 
   this.chinColour = [153, 153, 51]
   this.lipColour = [136, 68, 68]
@@ -87,7 +88,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
       fill(this.cream);
       push()
-      translate(0.2, 2)
+      translate(left_eye_pos[1], 2)
       ellipse(left_eye_pos[1], left_eye_pos[1], 0.5, 0.5);
       translate(0.5, 0)
       ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.5);
@@ -125,7 +126,41 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
     }
     
-    
+    //dots
+    if(this.dot_value == 2){
+
+      //shroomhead Top Dots
+       ///left 
+       scale(0.5)
+       fill(this.orange) /// lighter orange 255, 197, 196
+       ellipse(-1, this.dot_value, 2, 2) /// left little near big right dot
+       ellipse(-6, this.dot_value + 5, 1.5, 1.5) /// bottom left dot
+       ellipse(-5.9, this.dot_value +3, 1.5, 1.5) /// bottom left dot
+     
+       ///right
+       ellipse(3, this.dot_value +2, 2, 2) /// right big dot
+       ellipse(7, -6, 2, 2) /// right big dot
+     }
+     
+     else{
+      //shroomhead Top Dots
+      ///left
+      scale(1)
+     fill(this.orange)//255, 197, 196
+     ellipse(-1, this.dot_value -10, 2, 2) /// left little near big right dot
+     ellipse(this.dot_value, -7, 1, 1) /// bottom left dot
+     ellipse(-5.9, this.dot_value -5, 2, 2) /// top left dot
+     
+      ///right
+       ellipse(2, this.dot_value -4, 5, 5) /// right big dot
+       ellipse(5, -6, 2, 2) /// right big dot
+       ellipse(7, -1, 2, 2) /// right big dot
+     }
+
+     ///mouth
+  
+     translate(segment_average(positions.bottom_lip)[0],5)
+     rect(segment_average(positions.bottom_lip)[0], segment_average(positions.top_lip)[0],1, 0.5 )
 
   }
 
@@ -154,14 +189,18 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
     this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
     this.top_value = map(settings[1], 0, 100, -2, 2);
     this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
+    this.dot_value = map(settings[3], 0, 100, 3, 10);
+    this.headSize = map(settings[4], 0, 100, 1, 10);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
-    let settings = new Array(3);
+    let settings = new Array(4);
     settings[0] = map(this.num_eyes, 1, 2, 0, 100);
     settings[1] = map(this.top_value, -2, 2, 0, 100);
     settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
+    settings[3] = map(this.dot_value, 3, 10, 0, 100);
+    settings[4] = map(this.headSize, 1, 10, 0, 100);
     return settings;
   }
 }
