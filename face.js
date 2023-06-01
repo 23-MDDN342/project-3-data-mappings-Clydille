@@ -189,20 +189,20 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
+    this.num_eyes = int(map(settings[0], 0, 100, 1, 5));
     this.top_value = map(settings[1], 0, 100, -2, 2);
     this.mouth_size = map(settings[2], 0, 100, 0.5, 3);
-    this.dot_value = map(settings[3], 0, 100, 2.5, 5);
+    this.dot_value = map(settings[3], 0, 100, 1, 5);
     this.headSize = map(settings[4], 0, 100, 3.5, 5);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(6);
-    settings[0] = map(this.num_eyes, 1, 2, 0, 100);
+    settings[0] = map(this.num_eyes, 1, 5, 0, 100);
     settings[1] = map(this.top_value, -2, 2, 0, 100);
     settings[2] = map(this.mouth_size, 0.5, 3, 0, 100);
-    settings[3] = map(this.dot_value, 2.5, 5, 0, 100);
+    settings[3] = map(this.dot_value, 3, 5, 0, 100);
     settings[4] = map(this.headSize, 3.5, 5, 0, 100);
     return settings;
   }
