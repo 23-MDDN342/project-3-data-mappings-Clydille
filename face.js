@@ -77,7 +77,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
     if(this.num_eyes == 2) {
       fill(this.yellow);
       push()
-      translate(0.2, 2)
+      translate(0.2, this.num_eyes)
       ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.5);
       translate(0.5, 0)
       ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.5);
@@ -88,9 +88,9 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
       fill(this.cream);
       push()
-      translate(left_eye_pos[1], 2)
+      translate(this.num_eyes -2.5, 2)
       ellipse(left_eye_pos[1], left_eye_pos[1], 0.5, 0.5);
-      translate(0.5, 0)
+      translate(1, 0)
       ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.5);
       pop()
 
@@ -104,7 +104,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
  
     push()
     scale(0.4)
-    translate(segment_average(positions.chin)[0], segment_average(positions.chin)[0])
+    translate(segment_average(positions.chin)[0], 0)
     beginShape();
     vertex(0, 1);
     bezierVertex(-2, 1, -4.5, 1, -7, 0.5);
@@ -189,7 +189,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.num_eyes = int(map(settings[0], 0, 100, 1, 5));
+    this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
     this.top_value = map(settings[1], 0, 100, -2, 2);
     this.mouth_size = map(settings[2], 0, 100, 0.5, 3);
     this.dot_value = map(settings[3], 0, 100, 1, 5);
@@ -199,7 +199,7 @@ function Face(facecolor_value, eyecolor_value, top_value, dot_value) {
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
     let settings = new Array(6);
-    settings[0] = map(this.num_eyes, 1, 5, 0, 100);
+    settings[0] = map(this.num_eyes, 1, 2, 0, 100);
     settings[1] = map(this.top_value, -2, 2, 0, 100);
     settings[2] = map(this.mouth_size, 0.5, 3, 0, 100);
     settings[3] = map(this.dot_value, 3, 5, 0, 100);
