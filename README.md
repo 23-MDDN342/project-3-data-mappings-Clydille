@@ -2,4 +2,4 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11103447&assignment_repo_type=AssignmentRepo)
 ## 2023 MDDN342 Assignment 3: Data Mappings
 
-got some of my old code in here and sliders are working. I really have to do more due to starting late but shouldn't be to bad if I mostly focus my weekend off work on it 
+Training all the values are 'done' ish. They do need some redoing but is done. 

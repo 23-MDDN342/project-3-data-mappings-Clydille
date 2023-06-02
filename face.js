@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 12;
@@ -214,6 +214,22 @@ function Face() {
   rect(-10, -10, 20, 12, this.top_value + 3, this.top_value + 3,  this.top_value -1,  this.top_value-1);
 
       //dots
+          /// colour change///
+    this.dotColour = this.orange
+    if(this.dots_colour <= 25){
+      this.dotColour = this.lightorange
+  } else{
+      this.dotColour = this.lightred 
+    }
+
+    if(this.dots_colour >= 50){
+      this.dotColour = this.lightblue 
+    } 
+
+    if(this.dots_colour >=75){
+        this.dotColour = this.lightgreen
+    }
+    
        ///left
        fill(this.dotColour)
        ellipse(-1, this.dot_value -10, 2, 2) /// left little near big right dot
