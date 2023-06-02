@@ -7,7 +7,7 @@
 var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 11;
+var NUM_SLIDERS = 12;
 
 // other variables can be in here too
 // here's some examples for colors used
@@ -41,15 +41,21 @@ function Face() {
   this.shroomTop;
   this.eyeColour;
   this.head;
+  this.dotColour;
+
   this.yellow = [186, 162, 41];
   this.darkred = [43, 27, 26];
   this.red = [252, 138, 136]
+  this.lightred = [255, 197, 196]
   this.pink =[247, 225, 220]
   this.cream = [240, 233, 197]
   this.orange =[250, 163, 105]
+  this.lightorange = [235, 201, 178]
   this.blue = [125, 156, 209]
+  this.lightblue = [198, 233, 247]
   this.green = [178, 209, 125]
-  this.lightbrown = [191, 165, 107]
+  this.lightgreen = [198, 247, 225]
+  this.lightbrown = [122, 87, 61]
 
   this.num_eyes = 1.5;   //eye size
   this.top_value = 2;   
@@ -60,8 +66,6 @@ function Face() {
   this.dot_size = 0
   this.shroomY = 1
   this.shroomRotate = 1
-
-  
 
   /*
    * Draw the face with position lists that include:
@@ -118,17 +122,20 @@ function Face() {
 
     }
 
-     ///mouth
+     ///mouth///
      if(this.mouth_size) {
       push()
       fill(this.red)
       scale(0.3)
       translate(0,5)
-      rect(segment_average(positions.bottom_lip)[0], segment_average(positions.top_lip)[1],segment_average(positions.top_lip)[1], this.mouth_size, 1,1 )
+      rect(segment_average(positions.bottom_lip)[0], segment_average(positions.top_lip)[1],this.mouth_size, this.mouth_size, 1,1 )
        pop()
       } 
 
     ///SHROOOM TOPSSSS/////
+    
+    //shroom colour change////
+
     this.shroomTop = this.orange
     if(this.shroomColour <= 25){
       this.shroomTop = this.orange
@@ -144,6 +151,7 @@ function Face() {
         this.shroomTop = this.green
     }
     
+    ///SHROOOM TOP - Oval one ish/////
     if(this.top_value <= 2) { 
     noStroke();
     rotate(this.shroomRotate)
@@ -163,9 +171,27 @@ function Face() {
     bezierVertex(4.5, 1, 2, 1, 0, 1);
     endShape();
     
-    //dots
+    ////dots////
+
+    /// colour change///
+    this.dotColour = this.orange
+    if(this.dots_colour <= 25){
+      this.dotColour = this.lightorange
+  } else{
+      this.dotColour = this.lightred 
+    }
+
+    if(this.dots_colour >= 50){
+      this.dotColour = this.lightblue 
+    } 
+
+    if(this.dots_colour >=75){
+        this.dotColour = this.lightgreen
+    }
+    
+    
     //left 
-    fill(this.cream)//255, 197, 196
+    fill(this.dotColour)
     ellipse(-1, this.dot_value -10.5, this.dot_size -3, this.dot_size -3) /// left little near big right dot
     ellipse(this.dot_value, this.dot_value-8, this.dot_size -1 , this.dot_size -1 ) /// bottom left dot
     
@@ -179,8 +205,8 @@ function Face() {
 
     }
   else{
-
-  fill(this.shroomTop) /// red
+ ////Square Shroom Top////
+  fill(this.shroomTop) 
   push()
   scale(0.34)
   rotate(this.shroomRotate)
@@ -189,18 +215,17 @@ function Face() {
 
       //dots
        ///left
-       fill(255, 197, 196)//255, 197, 196
+       fill(this.dotColour)
        ellipse(-1, this.dot_value -10, 2, 2) /// left little near big right dot
        ellipse(this.dot_value, -7, 1, 1) /// bottom left dot
        ellipse(-5.9, this.dot_value -5, 2, 2) /// top left dot
        
-        ///right
-        ellipse(2, -3, this.dot_size +2.5, this.dot_size +2.5) /// right big dot
-        ellipse(5, -6, this.dot_size, this.dot_size) /// right big dot
-        ellipse(7, -1, this.dot_size -3, this.dot_size -3) ///  last right big dot
+      ///right
+      ellipse(2, -3, this.dot_size +2.5, this.dot_size +2.5) /// right big dot
+      ellipse(5, -6, this.dot_size, this.dot_size) /// right big dot
+      ellipse(7, -1, this.dot_size -3, this.dot_size -3) ///  last right big dot
       pop()
-    }
-  
+    } 
 
   }
 
@@ -237,6 +262,7 @@ function Face() {
     this.shroomColour = map(settings[8], 0, 100, 1, 100)
     this.pupilColour = map(settings[9], 0, 100,1,100)
     this.headColour = map(settings[10], 0, 100,1,4)
+    this.dots_colour = map(settings[11], 0, 100,1,100)
   }
 
   /* get internal properties as list of numbers 0-100 */
@@ -252,7 +278,8 @@ function Face() {
     settings[7] = map(this.shroomRotate, 1, 50, 0, 100)
     settings[8] = map(this.shroomColour, 1, 100, 0, 100)
     settings[9] = map(this.pupilColour, 1, 100, 0, 100)
-    settings[9] = map(this.headColour, 1, 4, 0, 100)
+    settings[10] = map(this.headColour, 1, 4, 0, 100)
+    settings[11] = map(this.dots_colour, 1, 100, 0, 100)
     return settings;
   }
 }
