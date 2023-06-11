@@ -4,10 +4,10 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 3;
+var NUM_SLIDERS = 12;
 
 // other variables can be in here too
 // here's some examples for colors used
@@ -29,18 +29,43 @@ function segment_average(segment) {
 }
 
 // This where you define your own face object
-function Face() {
+function Face() {  
+  
+
   // these are state variables for a face
   // (your variables should be different!)
-  this.detailColour = [204, 136, 17];
-  this.mainColour = [51, 119, 153];
-  this.num_eyes = 2;    // can be either 1 (cyclops) or 2 (two eyes)
-  this.eye_shift = -1;   // range is -10 to 10
-  this.mouth_size = 1;  // range is 0.5 to 8
 
-  this.chinColour = [153, 153, 51]
-  this.lipColour = [136, 68, 68]
-  this.eyebrowColour = [119, 85, 17]
+  ///colours
+  
+
+  this.shroomTop;
+  this.eyeColour;
+  this.head;
+  this.dotColour;
+
+  this.yellow = [186, 162, 41];
+  this.darkred = [43, 27, 26];
+  this.red = [252, 138, 136]
+  this.lightred = [255, 197, 196]
+  this.pink =[247, 225, 220]
+  this.cream = [240, 233, 197]
+  this.orange =[250, 163, 105]
+  this.lightorange = [235, 201, 178]
+  this.blue = [125, 156, 209]
+  this.lightblue = [198, 233, 247]
+  this.green = [178, 209, 125]
+  this.lightgreen = [198, 247, 225]
+  this.lightbrown = [122, 87, 61]
+
+  this.num_eyes = 1.5;   //eye size
+  this.top_value = 2;   
+  this.mouth_size = 2; 
+  this.dot_value = 2; //placements
+
+  this.headSize = 4.5
+  this.dot_size = 0
+  this.shroomY = 1
+  this.shroomRotate = 1
 
   /*
    * Draw the face with position lists that include:
@@ -49,70 +74,175 @@ function Face() {
    */  
   this.draw = function(positions) {
     console.log()
-    // head
+    ///Head Colour///
+    this.head = this.darkred
+    if(this.headColour <= 2){
+      this.head = this.darkred
+  } else{
+      this.head = this.pink
+    }
+
+    // head ///
+    noStroke();
     ellipseMode(CENTER);
-    stroke(stroke_color);
-    fill(this.mainColour);
-    ellipse(segment_average(positions.chin)[0], 0, 3, 4);
-    noStroke();
+    fill(this.head);
+    ellipse(segment_average(positions.chin)[0], segment_average(positions.chin)[1], this.headSize, this.headSize);
 
-
-    // mouth
-    fill(this.detailColour);
-    ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
-
-    // eyebrows
-    fill( this.eyebrowColour);
-    stroke( this.eyebrowColour);
-    strokeWeight(0.08);
-    this.draw_segment(positions.left_eyebrow);
-    this.draw_segment(positions.right_eyebrow);
-
-    // draw the chin segment using points
-    fill(this.chinColour);
-    stroke(this.chinColour);
-    this.draw_segment(positions.chin);
-
-    fill(100, 0, 100);
-    stroke(100, 0, 100);
-    this.draw_segment(positions.nose_bridge);
-    this.draw_segment(positions.nose_tip);
-
-    strokeWeight(0.03);
-
-    fill(this.lipColour);
-    stroke(this.lipColour);
-    this.draw_segment(positions.top_lip);
-    this.draw_segment(positions.bottom_lip);
-
-    let left_eye_pos = segment_average(positions.left_eye);
-    let right_eye_pos = segment_average(positions.right_eye);
-
-    // eyes
-    noStroke();
-    let curEyeShift = 0.04 * this.eye_shift;
-    if(this.num_eyes == 2) {
-      fill(this.detailColour);
-      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.33);
-      ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.33);
-
-      // fill(this.mainColour);
-      // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
-      // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
+    ////EYE POSITIONS////
+    this.R_eyeX = positions.right_eye[0] [0]
+    this.R_eyeY = positions.right_eye[0] [1]
+    this.L_eyeX = positions.left_eye[0] [0]
+    this.L_eyeY = positions.left_eye[0] [1]
+   
+    ////chaning eye colour////
+    this.eyeColour = this.yellow
+    if(this.pupilColour <= 25){
+      this.eyeColour = this.orange
+  } else{
+      this.eyeColour = this.lightbrown 
     }
-    else {
-      let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-      let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
 
-      fill(this.detailColour);
-      ellipse(eyePosX, eyePosY, 0.45, 0.27);
+    if(this.pupilColour >= 50){
+      this.eyeColour = this.blue 
+    } 
 
-      fill(this.mainColour);
-      ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
+    if(this.pupilColour >=75){
+        this.eyeColour = this.green
     }
-   // fill(0)
-   //ellipse(0,0, 0.5,0.5) center point
-   //rect(-2,-2,4.5,4) sizing debug 
+    ////EYES///
+    if(this.num_eyes < 2) {
+      
+      fill(this.eyeColour);
+      push()
+      translate(0.5, 2)
+      ellipse(this.L_eyeX, this.L_eyeY, this.num_eyes-1.8, this.num_eyes-1.8);
+      translate(0.5, 0)
+      ellipse(this.R_eyeX, this.R_eyeY, this.num_eyes-1.8,this.num_eyes-1.8);
+      pop()
+
+    }
+
+     ///mouth///
+     if(this.mouth_size) {
+      push()
+      fill(this.red)
+      scale(0.3)
+      translate(0,5)
+      rect(segment_average(positions.bottom_lip)[0], segment_average(positions.top_lip)[1],this.mouth_size, this.mouth_size, 1,1 )
+       pop()
+      } 
+
+    ///SHROOOM TOPSSSS/////
+    
+    //shroom colour change////
+
+    this.shroomTop = this.orange
+    if(this.shroomColour <= 25){
+      this.shroomTop = this.orange
+  } else{
+      this.shroomTop = this.red 
+    }
+
+    if(this.shroomColour >= 50){
+      this.shroomTop = this.blue 
+    } 
+
+    if(this.shroomColour >=75){
+        this.shroomTop = this.green
+    }
+    
+    ///SHROOOM TOP - Oval one ish/////
+    if(this.top_value <= 2) { 
+    noStroke();
+    rotate(this.shroomRotate)
+    push()
+    fill(this.shroomTop);
+    scale(0.38)
+    
+    translate(segment_average(positions.chin)[0], this.shroomY)
+    beginShape();
+    vertex(0, 1);
+    bezierVertex(-2, 1, -4.5, 1, -7,0.5);
+    bezierVertex(-9, -1, -10, -3, -9.8, -5.5);
+    bezierVertex(-9.5, -8, -7.5, -9.5, -4.5, -10.5);
+    bezierVertex(-2, -11, 0, -11.2, 4.5, -10.5);
+    bezierVertex(7.5, -9.5, 9.5, -8, 9.8, -5.5);
+    bezierVertex(10, -3, 9, -1, 7, 0.5);
+    bezierVertex(4.5, 1, 2, 1, 0, 1);
+    endShape();
+    
+    ////dots////
+
+    /// colour change///
+    this.dotColour = this.orange
+    if(this.dots_colour <= 25){
+      this.dotColour = this.lightorange
+  } else{
+      this.dotColour = this.lightred 
+    }
+
+    if(this.dots_colour >= 50){
+      this.dotColour = this.lightblue 
+    } 
+
+    if(this.dots_colour >=75){
+        this.dotColour = this.lightgreen
+    }
+    
+    
+    //left 
+    fill(this.dotColour)
+    ellipse(-1, this.dot_value -10.5, this.dot_size -3, this.dot_size -3) /// left little near big right dot
+    ellipse(this.dot_value, this.dot_value-8, this.dot_size -1 , this.dot_size -1 ) /// bottom left dot
+    
+   ellipse(-5.9, -3, this.dot_size, this.dot_size) /// first left dot
+   ellipse(-5.5, this.dot_value-7, this.dot_size -2.5, this.dot_size -2.5) /// top left dot
+    ///right
+     ellipse(2, -3, this.dot_size +2.5, this.dot_size +2.5) /// right big dot
+     ellipse(5, -6, this.dot_size, this.dot_size) /// right big dot
+     ellipse(7, -1, this.dot_size -3, this.dot_size -3) ///  last right big dot
+    pop()
+
+    }
+  else{
+ ////Square Shroom Top////
+  fill(this.shroomTop) 
+  push()
+  scale(0.34)
+  rotate(this.shroomRotate)
+  translate(segment_average(positions.chin)[0], this.shroomY)
+  rect(-10, -10, 20, 12, this.top_value + 3, this.top_value + 3,  this.top_value -1,  this.top_value-1);
+
+      //dots
+          /// colour change///
+    this.dotColour = this.orange
+    if(this.dots_colour <= 25){
+      this.dotColour = this.lightorange
+  } else{
+      this.dotColour = this.lightred 
+    }
+
+    if(this.dots_colour >= 50){
+      this.dotColour = this.lightblue 
+    } 
+
+    if(this.dots_colour >=75){
+        this.dotColour = this.lightgreen
+    }
+    
+       ///left
+       fill(this.dotColour)
+       ellipse(-1, this.dot_value -10, 2, 2) /// left little near big right dot
+       ellipse(this.dot_value, -7, 1, 1) /// bottom left dot
+       ellipse(-5.9, this.dot_value -5, 2, 2) /// top left dot
+       
+      ///right
+      ellipse(2, -3, this.dot_size +2.5, this.dot_size +2.5) /// right big dot
+      ellipse(5, -6, this.dot_size, this.dot_size) /// right big dot
+      ellipse(7, -1, this.dot_size -3, this.dot_size -3) ///  last right big dot
+      pop()
+    } 
+
   }
 
   // example of a function *inside* the face object.
@@ -137,17 +267,35 @@ function Face() {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    this.eye_shift = map(settings[1], 0, 100, -2, 2);
-    this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
+    this.num_eyes = map(settings[0], 0, 100, 1, 2);
+    this.top_value = map(settings[1], 0, 100, 1, 6);
+    this.mouth_size = map(settings[2], 0, 100, 0.5, 3);
+    this.dot_value = map(settings[3], 0, 100, 1, 5);
+    this.headSize = map(settings[4], 0, 100, 3.5, 5);
+    this.shroomY = map(settings[5], 0, 100, 0, 6);
+    this.dot_size = map(settings[6], 0, 100, 1, 5)
+    this.shroomRotate = map(settings[7], 0, 100, 1, 50)
+    this.shroomColour = map(settings[8], 0, 100, 1, 100)
+    this.pupilColour = map(settings[9], 0, 100,1,100)
+    this.headColour = map(settings[10], 0, 100,1,4)
+    this.dots_colour = map(settings[11], 0, 100,1,100)
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
-    let settings = new Array(3);
+    let settings = new Array(8);
     settings[0] = map(this.num_eyes, 1, 2, 0, 100);
-    settings[1] = map(this.eye_shift, -2, 2, 0, 100);
-    settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
+    settings[1] = map(this.top_value,1, 6, 0, 100);
+    settings[2] = map(this.mouth_size, 0.5, 3, 0, 100);
+    settings[3] = map(this.dot_value, 3, 5, 0, 100);
+    settings[4] = map(this.headSize, 3.5, 5, 0, 100);
+    settings[5] = map(this.shroomY, 0, 6, 0, 100);
+    settings[6] = map(this.dot_size, 0.5, 5, 0, 100)
+    settings[7] = map(this.shroomRotate, 1, 50, 0, 100)
+    settings[8] = map(this.shroomColour, 1, 100, 0, 100)
+    settings[9] = map(this.pupilColour, 1, 100, 0, 100)
+    settings[10] = map(this.headColour, 1, 4, 0, 100)
+    settings[11] = map(this.dots_colour, 1, 100, 0, 100)
     return settings;
   }
 }
